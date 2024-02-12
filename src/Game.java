@@ -4,13 +4,21 @@ import java.util.Scanner;
 public class Game {
     private ArrayList<Player> players;
     // an arraylist players
+    private boolean gameOver;
     private Deck card;
+    // calculate the number of rounds
+    private int rounds;
+    private CardGameViewer window;
+    private String winner;
     //2. Constructor
 //a. Initialize your Deck class and players here
 //b. You may need to ask for user input to get the player name
 //c. Don’t forget to give your player a hand of cards if you need to
     public Game(){
         // hardcoding filling out the values, suits, etc for deck
+        window = new CardGameViewer(this);
+        gameOver = false;
+        rounds = 0;
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
         String[] suits = {"Hearts", "Clubs", "Spades", "Diamonds"};
         int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -47,24 +55,31 @@ public class Game {
             }
         }
     }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+    public int getRounds(){
+        return rounds;
+    }
+    public String getWinner(){
+        return winner;
+    }
+
     //3. printInstructions - This method should print the instructions for your game. Be
 //sure to call it before you begin playing or within the playGame function.
     // Understands how the keyword static affects methods and variables
     public static void printInstructions(){
 
-        System.out.println("Instructions: Welcome to War! Each player turns up a card at the same time and the player with the higher card takes both cards and puts them, on the bottom of his stack.\n" +
-                "\n" +
-                "If the cards are the same rank, it is War. Each player turns up one card face down and one card face up. The player with the higher cards takes both piles. If the turned-up cards are again the same rank, each player places another card face down and turns another card face up. The player with the higher card takes all cards, and so on.\n" +
-                "\n" +
-                "The game ends when one player has won all the cards. Good luck!");
+        System.out.println("Instructions: Welcome to War! Each player turns up a card at the same time and the player with the higher card takes both cards and puts them, on the bottom of his stack.\n" + "If the cards are the same rank, it is War. Each player turns up one card face down and one card face up. The player with the higher cards takes both piles. If the turned-up cards are again the same rank, each player places another card face down and turns another card face up. The player with the higher card takes all cards, and so on.\n" + "The game ends when one player has won all the cards. Good luck!");
     }
     //4. playGame - This method should contain the logic to run your game. For example, if
 //your game were BlackJack, the player would continuously draw cards from the deck until
 //they reached 21, forfeit, or hit a number higher than 21.
     public void playGame(){
-        boolean bool = true;
         // game keeps running until one gets all 52 cards
-        while (bool) {
+
+        while (!gameOver) {
             // Each player draws a card
             Card card1 = players.get(0).getHand().get(0);
             Card card2 = players.get(1).getHand().get(0);
@@ -162,7 +177,7 @@ public class Game {
             String answer = user1.nextLine();
             if (answer.equals("yes")) {
                 // Display the drawn cards
-
+                rounds++;
                 System.out.println(players.get(0).getName() + " draws: " + card1.toString());
                 System.out.println(players.get(1).getName() + " draws: " + card2.toString());
 
@@ -176,12 +191,14 @@ public class Game {
                     players.get(0).addCard(card2);
                     // say player 1 won
                     System.out.println(players.get(0).getName() + " wins the round!");
+                    window.repaint();
                 } else if (result < 0) {
                     // Player 2 wins the round, add both cards to their hand
                     players.get(1).addCard(card1);
                     players.get(1).addCard(card2);
                     // say player 2 won
                     System.out.println(players.get(1).getName() + " wins the round!");
+                    window.repaint();
                 }
                 // else its 0 then a tie
                 else {
@@ -260,18 +277,21 @@ public class Game {
                 players.get(1).getHand().remove(card2);
                 // loop until someone wins
                 if (players.get(0).getHand().size() == 52 || players.get(1).getHand().size() == 52) {
-                    bool = false;
+                    gameOver = true;
                 }
             }
 
-            if (answer.equals("no")){
-                break;
-            }
             // Display the winner
-            if (players.get(0).getHand().size() == 52) {
-                System.out.println(players.get(0).getName() + " wins the game!");
-            } else {
-                System.out.println(players.get(1).getName() + " wins the game!");
+            if (players.get(0).getHand().size() == 52 && players.get(1).getHand().isEmpty()) {
+                winner = players.get(0).getName();
+                System.out.println(winner + " wins the game!");
+            } else if (players.get(1).getHand().size() == 52 && players.get(0).getHand().isEmpty()){
+                winner = players.get(1).getName();
+                System.out.println(winner + " wins the game!");
+            }
+            if (answer.equals("no")){
+                // print who has the most or if a tie
+                break;
             }
 
         }

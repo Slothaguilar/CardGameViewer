@@ -6,21 +6,12 @@ public class Deck {
     // Can write a class containing instance variables, constructors, and methods, using access modifiers (private vs public) appropriately.
     private ArrayList<Card> cards;
     private int cardsLeft;
+
     //2. Deck constructor
     // ["A", "Hearts", 1], ["2", "Hearts", 2], ["3", "Hearts",
     //3],["A", "Clubs", 1], ["2", "Clubs", 2], ["3", "Clubs", 3]
     public Deck(String[] rank, String[] suits, int[] values){
 //        cards = new ArrayList<>();
-//           // goes thru suits, Example,
-//            for (String suit : suits) {
-//                for (int value : values) {
-//                    for (String ranks : rank) {
-//                        Card card= new Card(ranks, suit, value);
-//                        cards.add(card);
-//                        cardsLeft++;
-//                }
-//            }
-//        }
         cards = new ArrayList<>();
         cardsLeft = 0;
 
