@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
@@ -41,5 +42,12 @@ public class Player {
     public String toString() {
         return name + " has " + points + " points\n" + name + "'s cards: " + hand;
     }
+
+//    public void draw(Graphics g){
+//        // draw the deck which is faced down
+//        hand.get(0).draw(g);
+//
+//
+//    }
 
 }

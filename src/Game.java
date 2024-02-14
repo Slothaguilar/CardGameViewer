@@ -10,6 +10,8 @@ public class Game {
     private int rounds;
     private CardGameViewer window;
     private String winner;
+    private Card cardPlayer1;
+    private Card cardPlayer2;
     //2. Constructor
 //a. Initialize your Deck class and players here
 //b. You may need to ask for user input to get the player name
@@ -19,11 +21,12 @@ public class Game {
         window = new CardGameViewer(this);
         gameOver = false;
         rounds = 0;
+        this.winner = "-";
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
-        String[] suits = {"Hearts", "Clubs", "Spades", "Diamonds"};
+        String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
         int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         // add these hardcoding to the deck
-        card = new Deck(ranks, suits, values);
+        card = new Deck(ranks, suits, values, this);
         card.shuffle();  // Shuffle the deck before dealing
         // create the array list of players
         players = new ArrayList<>();
@@ -66,6 +69,26 @@ public class Game {
         return winner;
     }
 
+    public Deck getCard() {
+        return card;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public CardGameViewer getWindow() {
+        return window;
+    }
+
+    public Card getCardPlayer1() {
+        return cardPlayer1;
+    }
+
+    public Card getCardPlayer2() {
+        return cardPlayer2;
+    }
+
     //3. printInstructions - This method should print the instructions for your game. Be
 //sure to call it before you begin playing or within the playGame function.
     // Understands how the keyword static affects methods and variables
@@ -81,121 +104,38 @@ public class Game {
 
         while (!gameOver) {
             // Each player draws a card
-            Card card1 = players.get(0).getHand().get(0);
-            Card card2 = players.get(1).getHand().get(0);
-            boolean ti = true;
-            // sets the value of the card of the first player
-            // Can use and apply SLICE String Methods
-            if (ti) {
-                if (card1.getRank().equals("A")) {
-                    card1.setPoint(1);
-                    ti = false;
-                } else if (card1.getRank().equals("2")) {
-                    card1.setPoint(2);
-                    ti = false;
-                } else if (card1.getRank().equals("3")) {
-                    card1.setPoint(3);
-                    ti = false;
-                } else if (card1.getRank().equals("4")) {
-                    card1.setPoint(4);
-                    ti = false;
-                } else if (card1.getRank().equals("5")) {
-                    card1.setPoint(5);
-                    ti = false;
-                } else if (card1.getRank().equals("6")) {
-                    card1.setPoint(6);
-                    ti = false;
-                } else if (card1.getRank().equals("7")) {
-                    card1.setPoint(7);
-                    ti = false;
-                } else if (card1.getRank().equals("8")) {
-                    card1.setPoint(8);
-                    ti = false;
-                } else if (card1.getRank().equals("9")) {
-                    card1.setPoint(9);
-                    ti = false;
-                } else if (card1.getRank().equals("10")) {
-                    card1.setPoint(10);
-                    ti = false;
-                } else if (card1.getRank().equals("Jack")) {
-                    card1.setPoint(11);
-                    ti = false;
-                } else if (card1.getRank().equals("Queen")) {
-                    card1.setPoint(12);
-                    ti = false;
-                } else if (card1.getRank().equals("King")) {
-                    card1.setPoint(13);
-                    ti = false;
-                }
-            }
-            // sets the value of the card of player 2
-            boolean di = true;
-            if (di) {
-                if (card2.getRank().equals("A")) {
-                    card2.setPoint(1);
-                    di = false;
-                } else if (card2.getRank().equals("2")) {
-                    card2.setPoint(2);
-                    di = false;
-                } else if (card2.getRank().equals("3")) {
-                    card2.setPoint(3);
-                    di = false;
-                } else if (card2.getRank().equals("4")) {
-                    card2.setPoint(4);
-                    di = false;
-                } else if (card2.getRank().equals("5")) {
-                    card2.setPoint(5);
-                    di = false;
-                } else if (card2.getRank().equals("6")) {
-                    card2.setPoint(6);
-                    di = false;
-                } else if (card2.getRank().equals("7")) {
-                    card2.setPoint(7);
-                    di = false;
-                } else if (card2.getRank().equals("8")) {
-                    card2.setPoint(8);
-                    di = false;
-                } else if (card2.getRank().equals("9")) {
-                    card2.setPoint(9);
-                    di = false;
-                } else if (card2.getRank().equals("10")) {
-                    card2.setPoint(10);
-                    di = false;
-                } else if (card2.getRank().equals("Jack")) {
-                    card2.setPoint(11);
-                    di = false;
-                } else if (card2.getRank().equals("Queen")) {
-                    card2.setPoint(12);
-                    di = false;
-                } else if (card2.getRank().equals("King")) {
-                    card1.setPoint(13);
-                    di = false;
-                }
-            }
             Scanner user1 = new Scanner(System.in);
             System.out.println("Continue playing? ");
             String answer = user1.nextLine();
+            cardPlayer1 = players.get(0).getHand().get(0);
+            cardPlayer2 = players.get(1).getHand().get(0);
+            boolean ti = true;
+            // sets the value of the card of the first player
+            // Can use and apply SLICE String Methods
+
             if (answer.equals("yes")) {
                 // Display the drawn cards
                 rounds++;
-                System.out.println(players.get(0).getName() + " draws: " + card1.toString());
-                System.out.println(players.get(1).getName() + " draws: " + card2.toString());
+                window.repaint();
+                System.out.println(players.get(0).getName() + " draws: " + cardPlayer1.toString());
+                System.out.println(players.get(1).getName() + " draws: " + cardPlayer2.toString());
+                window.repaint();
 
                 // Compare the ranks of the drawn cards
-                int result = card1.getPoint() - card2.getPoint();
+                int result = cardPlayer1.getPoint() - cardPlayer2.getPoint();
 
                 // if player 1 card greater in value then players 2 card the positve result
                 if (result > 0) {
                     // Player 1 wins the round, add both cards to their hand
-                    players.get(0).addCard(card1);
-                    players.get(0).addCard(card2);
+                    players.get(0).addCard(cardPlayer1);
+                    players.get(0).addCard(cardPlayer2);
                     // say player 1 won
                     System.out.println(players.get(0).getName() + " wins the round!");
                     window.repaint();
                 } else if (result < 0) {
                     // Player 2 wins the round, add both cards to their hand
-                    players.get(1).addCard(card1);
-                    players.get(1).addCard(card2);
+                    players.get(1).addCard(cardPlayer1);
+                    players.get(1).addCard(cardPlayer2);
                     // say player 2 won
                     System.out.println(players.get(1).getName() + " wins the round!");
                     window.repaint();
@@ -209,8 +149,8 @@ public class Game {
                     ArrayList<Card> warCards = new ArrayList<>();
 
                     // Add the tied cards to the warCards list
-                    warCards.add(card1);
-                    warCards.add(card2);
+                    warCards.add(cardPlayer1);
+                    warCards.add(cardPlayer2);
 
                     // Continue drawing additional cards for the war
                     boolean warOn = true;
@@ -259,8 +199,8 @@ public class Game {
                             // Understand how to use nesting to embed loops and conditionals inside of other loops and conditionals.
                             // Can write algorithms to traverse and modify Arrays and ArrayLists.
                             for (Player player : players) {
-                                player.getHand().remove(card1);
-                                player.getHand().remove(card2);
+                                player.getHand().remove(cardPlayer1);
+                                player.getHand().remove(cardPlayer2);
                                 for (Card warCard : warCards) {
                                     player.getHand().remove(warCard);
                                 }
@@ -268,13 +208,13 @@ public class Game {
                         }
                     }
                     // remove the tied cards
-                    players.get(0).getHand().remove(card1);
-                    players.get(1).getHand().remove(card2);
+                    players.get(0).getHand().remove(cardPlayer1);
+                    players.get(1).getHand().remove(cardPlayer2);
                 }
 
                 // Remove the drawn cards from players' hands
-                players.get(0).getHand().remove(card1);
-                players.get(1).getHand().remove(card2);
+                players.get(0).getHand().remove(cardPlayer1);
+                players.get(1).getHand().remove(cardPlayer2);
                 // loop until someone wins
                 if (players.get(0).getHand().size() == 52 || players.get(1).getHand().size() == 52) {
                     gameOver = true;
@@ -291,6 +231,7 @@ public class Game {
             }
             if (answer.equals("no")){
                 // print who has the most or if a tie
+                gameOver = true;
                 break;
             }
 

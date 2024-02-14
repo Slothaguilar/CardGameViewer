@@ -6,14 +6,21 @@ public class Card {
     private String rank;
     private int point;
     private String suit;
-    private CardGameViewer card;
-    private Image[] cardImage;
+    private CardGameViewer window;
+    private Image cardImage;
+    private Image[] backImage;
 
     // A constructor that takes in these 3 parameters (rank, suit, and point)
-    public Card(String rank, String suit, int point){
+    public Card(String rank, String suit, int point, CardGameViewer card,Image cardImage){
         this.rank = rank;
         this.suit = suit;
         this.point = point;
+
+        this.window = card;
+        this.cardImage = cardImage;
+        backImage = new Image[1];
+
+        backImage[0] = card.getCardImage()[52];
 
     }
     // Getter and Setter methods for each instance variable
@@ -41,15 +48,15 @@ public class Card {
 
         this.suit = suit;
     }
-// A toString method that returns a String in the following format:
-    // “[rank] of [suit]” (Ex. “Jack of Clubs”)
-
     public String toString() {
 
         return rank + " of " + suit;
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics g,int x, int y){
         // card draw itself
+        g.drawImage(cardImage, x, y, 100, 150, window);
+            // draw the card images
+
     }
 }

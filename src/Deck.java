@@ -1,3 +1,5 @@
+// Sofia Aguilar
+import java.awt.*;
 import java.util.ArrayList;
 import java.lang.Math;
 
@@ -6,24 +8,31 @@ public class Deck {
     // Can write a class containing instance variables, constructors, and methods, using access modifiers (private vs public) appropriately.
     private ArrayList<Card> cards;
     private int cardsLeft;
+    private CardGameViewer a;
+    private Image[] backImage;
+    private Image image;
 
-    //2. Deck constructor
-    // ["A", "Hearts", 1], ["2", "Hearts", 2], ["3", "Hearts",
-    //3],["A", "Clubs", 1], ["2", "Clubs", 2], ["3", "Clubs", 3]
-    public Deck(String[] rank, String[] suits, int[] values){
+
+    public Deck(String[] rank, String[] suits, int[] values, Game game){
 //        cards = new ArrayList<>();
         cards = new ArrayList<>();
         cardsLeft = 0;
+        a = game.getWindow();
+        // back of the card
+        backImage = new Image[1];
+        backImage[0] = a.getCardImage()[52];
 
         // Iterate over ranks, suits, and values to create cards
-        for (String suit : suits) {
+        for (int i = 0; i < suits.length; i++){
+                // String suit : suits) {
             for (int value : values) {
-                for (String ranks : rank) {
-                    // Create a Card with the correct rank, suit, and value
-                    Card card = new Card(ranks, suit, value);
-                    cards.add(card);
-                    cardsLeft++;
-                }
+                // Create a Card with the correct rank, suit, and value
+                // image the correct image of the card
+                int k = 4 * (value - 1) + i;
+                image = a.getCardImage()[k];
+                Card card = new Card(rank[value-1], suits[i], value, a, image);
+                cards.add(card);
+                cardsLeft++;
             }
         }
     }
@@ -40,6 +49,11 @@ public class Deck {
 
         return cardsLeft;
     }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     // deal — This method “deals” a card by selecting a card from the deck and returning it.
     public Card deal(){
         if (isEmpty()){
@@ -58,8 +72,12 @@ public class Deck {
             cards.set(i, cards.get(random));
             cards.set(random, temp);
         }
-        //○ Generate a random integer r (using Math.random) between 0
-        //and i, inclusive;
-        //○ Exchange cards[i] and cards[r]
+    }
+    public void draw(Graphics g){
+        // draw the deck which is faced down
+//        g.drawImage(backImage[0], 150, 400, 100, 150, a);
+//        g.drawImage(backImage[0], 500, 400, 100, 150, a);
+//
+
     }
 }
