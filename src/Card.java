@@ -52,11 +52,27 @@ public class Card {
 
         return rank + " of " + suit;
     }
+//    public int getIndexSuit(String suit){
+//        if (suit.equals("Spades")){
+//            return 0;
+//        }
+//        else if (suit.equals("Hearts")){
+//            return 1;
+//
+//        }
+//        else if (suit.equals("Diamonds")){
+//            return 2;
+//
+//        }
+//        return 3;
+//    }
 
     public void draw(Graphics g,int x, int y){
         // card draw itself
         g.drawImage(cardImage, x, y, 100, 150, window);
-            // draw the card images
 
+    }
+    public void tieDrawCard(Graphics g, int x, int y, Image tieImage){
+        g.drawImage(tieImage, x, y, 100, 150, window);
     }
 }

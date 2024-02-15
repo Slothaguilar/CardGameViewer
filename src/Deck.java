@@ -25,12 +25,13 @@ public class Deck {
         // Iterate over ranks, suits, and values to create cards
         for (int i = 0; i < suits.length; i++){
                 // String suit : suits) {
-            for (int value : values) {
+            for (int j = 0; j< values.length; j++) {
                 // Create a Card with the correct rank, suit, and value
                 // image the correct image of the card
-                int k = 4 * (value - 1) + i;
+
+                int k = 4 * (values[j] - 1) + i;
                 image = a.getCardImage()[k];
-                Card card = new Card(rank[value-1], suits[i], value, a, image);
+                Card card = new Card(rank[values[j]-1], suits[i], values[j], a, image);
                 cards.add(card);
                 cardsLeft++;
             }
