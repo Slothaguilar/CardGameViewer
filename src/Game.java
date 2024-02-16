@@ -13,6 +13,12 @@ public class Game {
     private Card cardPlayer1;
     private Card cardPlayer2;
     private boolean warOn;
+    private Card warCardP1;
+    private Card warCardP2;
+
+
+
+//    public static boolean DEBUG = true;
     //2. Constructor
 //a. Initialize your Deck class and players here
 //b. You may need to ask for user input to get the player name
@@ -21,6 +27,8 @@ public class Game {
         // hardcoding filling out the values, suits, etc for deck
         window = new CardGameViewer(this);
         gameOver = false;
+        warOn = true;
+
         rounds = 0;
         this.winner = "-";
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
@@ -28,7 +36,7 @@ public class Game {
         int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         // add these hardcoding to the deck
         card = new Deck(ranks, suits, values, this);
-        card.shuffle();  // Shuffle the deck before dealing
+        card.shuffle(); // Shuffle the deck before dealing
         // create the array list of players
         players = new ArrayList<>();
         // ask user 1 for name
@@ -47,6 +55,10 @@ public class Game {
 
         // deal the card deck to the each of the players hand
         // Understand how to use nesting to embed loops and conditionals inside of other loops and conditionals.
+//        if (!Game.DEBUG) {
+//            card.shuffle();
+//        }
+        card.shuffle(); // Shuffle the deck before dealing
         for (Player player : players) {
             for (int j = 0; j < 26; j++) {
                 Card deck = card.deal();
@@ -59,6 +71,7 @@ public class Game {
             }
         }
     }
+
 
     public boolean isGameOver() {
         return gameOver;
@@ -94,6 +107,13 @@ public class Game {
         return warOn;
     }
 
+    public Card getWarCardP1() {
+        return warCardP1;
+    }
+
+    public Card getWarCardP2() {
+        return warCardP2;
+    }
 
     //3. printInstructions - This method should print the instructions for your game. Be
 //sure to call it before you begin playing or within the playGame function.
@@ -107,6 +127,8 @@ public class Game {
 //they reached 21, forfeit, or hit a number higher than 21.
     public void playGame(){
         // game keeps running until one gets all 52 cards
+        warCardP1 = players.get(0).getHand().get(1);
+        warCardP2 = players.get(1).getHand().get(1);
 
         while (!gameOver) {
             // Each player draws a card
@@ -116,22 +138,24 @@ public class Game {
             cardPlayer1 = players.get(0).getHand().get(0);
             cardPlayer2 = players.get(1).getHand().get(0);
             boolean ti = true;
+            int count = 0;
+
             // sets the value of the card of the first player
             // Can use and apply SLICE String Methods
 
-            if (answer.equals("yes")) {
+            if (answer.equals("yes") || answer.equals("y")) {
                 // Display the drawn cards
                 rounds++;
-                window.repaint();
                 System.out.println(players.get(0).getName() + " draws: " + cardPlayer1.toString());
                 System.out.println(players.get(1).getName() + " draws: " + cardPlayer2.toString());
                 window.repaint();
 
                 // Compare the ranks of the drawn cards
                 int result = cardPlayer1.getPoint() - cardPlayer2.getPoint();
-
+                //window.repaint();
                 // if player 1 card greater in value then players 2 card the positve result
                 if (result > 0) {
+                    warOn = false;
                     // Player 1 wins the round, add both cards to their hand
                     players.get(0).addCard(cardPlayer1);
                     players.get(0).addCard(cardPlayer2);
@@ -139,6 +163,7 @@ public class Game {
                     System.out.println(players.get(0).getName() + " wins the round!");
                     window.repaint();
                 } else if (result < 0) {
+                    warOn = false;
                     // Player 2 wins the round, add both cards to their hand
                     players.get(1).addCard(cardPlayer1);
                     players.get(1).addCard(cardPlayer2);
@@ -149,6 +174,8 @@ public class Game {
                 // else its 0 then a tie
                 else {
                     // It's a tie, go to war and print out
+                    count++;
+
                     System.out.println("It's a tie! Going to war...");
 
                     // Temporary storage for cards in war
@@ -157,9 +184,11 @@ public class Game {
                     // Add the tied cards to the warCards list
                     warCards.add(cardPlayer1);
                     warCards.add(cardPlayer2);
+                    warOn = true;
+
+                    window.repaint();
 
                     // Continue drawing additional cards for the war
-                    warOn = true;
                     while (warOn) {
                         // Check if players have enough cards for the war
                         if (players.get(0).getHand().size() < 2 || players.get(1).getHand().size() < 2) {
@@ -171,7 +200,8 @@ public class Game {
                         // Draw additional cards for the war
                         warCards.add(players.get(0).getHand().get(1));
                         warCards.add(players.get(1).getHand().get(1));
-                        window.repaint();
+                        warCardP1 = players.get(0).getHand().get(1);
+                        warCardP2 = players.get(1).getHand().get(1);
 
                         // Display the drawn cards
                         System.out.println(players.get(0).getName() + " draws: " + warCards.get(warCards.size() - 2).toString());
@@ -197,7 +227,7 @@ public class Game {
                             warOn = false;
                         } else if (warResult < 0) {
                             players.get(0).getHand().remove(players.get(0).getHand().get(1));
-                            players.get(1).getHand().remove(players.get(0).getHand().get(1));
+                            players.get(1).getHand().remove(players.get(1).getHand().get(1));
                             // Player 2 wins the war, add all war cards to their hands
                             // Understand how to use nesting to embed loops and conditionals inside of other loops and conditionals.
                             // Can write algorithms to traverse and modify Arrays and ArrayLists.
@@ -234,6 +264,9 @@ public class Game {
                 players.get(0).getHand().remove(cardPlayer1);
                 players.get(1).getHand().remove(cardPlayer2);
                 // loop until someone wins
+                if (count > 0) {
+                    warOn = true;
+                }
                 if (players.get(0).getHand().size() == 52 || players.get(1).getHand().size() == 52) {
                     gameOver = true;
                 }

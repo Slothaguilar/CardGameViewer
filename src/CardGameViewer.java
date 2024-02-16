@@ -60,26 +60,30 @@ public class CardGameViewer extends JFrame{
                     g.drawString(t.getWinner() + " wins!", 150, 300);
                 }
 
-            }else {
+            } else {
                 // draw the cards and the backs of each player
                 t.getCardPlayer1().draw(g, x1, y1);
                 t.getCardPlayer2().draw(g, x2, y2);
                 g.drawImage(cardImage[52], 100, 400, 100, 150, this);
                 g.drawImage(cardImage[52],500, 400, 100, 150, this );
+
+                // if there is a tie
+                if(t.isWarOn()){
+                    // get the next card instead of getCardPlayer1()
+                    g.setColor(Color.black);
+                    t.getWarCardP1().draw(g, 200, 300);
+                    t.getWarCardP2().draw(g, 400, 300);
+
+//                    g.drawImage(cardImage[52], 100, 200, 100, 150, this);
+//                    g.drawImage(cardImage[52],500, 200, 100, 150, this );
+                }
+
                 // draw the names of each player
                 g.setFont(new Font("Serif", Font.PLAIN, 50));
                 g.drawString(t.getPlayers().get(0).getName(), 130, 170);
                 g.drawString(t.getPlayers().get(1).getName(), 530, 170);
 
-                // if there is a tie
-//                if(t.isWarOn()){
-//                    for (int i = 0; i < 2; i++) {
-//                        int points = t.getPlayers().get(i).getHand().get(1).getPoint();
-//                        int suit = t.getPlayers().get(i).getHand().get(1).getIndexSuit(t.getPlayers().get(i).getHand().get(1).getSuit());
-//                        int k = 4 * (points - 1) + suit;
-//                        t.getCardPlayer1().tieDrawCard(g, 500, y1 + 50, cardImage[k]);
-//                    }
-//                }
+
             }
 
     // t.getPlayers().get(0).draw(g);
