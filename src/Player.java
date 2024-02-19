@@ -1,3 +1,6 @@
+// Sofia Aguilar 2/18/24
+// back end of holding information of each player with their specific hand of cards, their name and how many points they have
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -37,17 +40,11 @@ public class Player {
     public void addCard(Card card) {
         hand.add(card);
     }
-
+    // toString of returing the players name, how many points they have, and how their hand
     @Override
     public String toString() {
         return name + " has " + points + " points\n" + name + "'s cards: " + hand;
     }
 
-//    public void draw(Graphics g){
-//        // draw the deck which is faced down
-//        hand.get(0).draw(g);
-//
-//
-//    }
 
 }

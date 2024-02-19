@@ -1,68 +1,60 @@
-// Sofia Aguilar
+// Sofia Aguilar 2/18/24
+// This class is the back end and holds the deck of cards in the game and evenly
+// shuffles and deals the cards to each player
 import java.awt.*;
 import java.util.ArrayList;
 import java.lang.Math;
 
 public class Deck {
-    // Instance variables for the ArrayList of cards and the number of cardsLeft
+    // Instance variables for the ArrayList of cards and the number of cardsLeft and having acces to the CardGame Viewer
+    // and having access to the card images for the front end
     // Can write a class containing instance variables, constructors, and methods, using access modifiers (private vs public) appropriately.
     private ArrayList<Card> cards;
     private int cardsLeft;
-    private CardGameViewer a;
-    private Image[] backImage;
+    private CardGameViewer gameViewer;
     private Image image;
 
 
     public Deck(String[] rank, String[] suits, int[] values, Game game){
-//        cards = new ArrayList<>();
+        // inizalize the instance varaibles
         cards = new ArrayList<>();
         cardsLeft = 0;
-        a = game.getWindow();
-        // back of the card
-        backImage = new Image[1];
-        backImage[0] = a.getCardImage()[52];
-
-        // Iterate over ranks, suits, and values to create cards
+        gameViewer = game.getWindow();
+        // Iterate over suits and values to create cards as value is the same as rank
         for (int i = 0; i < suits.length; i++){
-                // String suit : suits) {
             for (int j = 0; j< values.length; j++) {
                 // Create a Card with the correct rank, suit, and value
                 // image the correct image of the card
-
-                int k = 4 * (values[j] - 1) + i;
-                image = a.getCardImage()[k];
-                Card card = new Card(rank[values[j]-1], suits[i], values[j], a, image);
+                int cardImageIndex = 4 * (values[j] - 1) + i;
+                image = gameViewer.getCardImage()[cardImageIndex];
+                // create a new card witha rank, suit, value, and image
+                Card card = new Card(rank[values[j]-1], suits[i], values[j], this.gameViewer, image);
                 cards.add(card);
                 cardsLeft++;
             }
         }
     }
-// isEmpty - This method should return true when the number of cards left in the deck is 0
-
+    // getters of the instance varaibles
     public boolean isEmpty(){
         if (cardsLeft == 0){
             return true;
         }
         return false;
     }
-    // getCardsLeft — This method returns the number of cards in the deck that are left to be dealt
     public int getCardsLeft() {
 
         return cardsLeft;
     }
-
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
-
-    // deal — This method “deals” a card by selecting a card from the deck and returning it.
+    // deals off the cards that are left in the deck of cards
     public Card deal(){
         if (isEmpty()){
             return null;
         }
         cardsLeft--;
+        // slect a card from the deck and return it
         return cards.get(cardsLeft);
     }
+    // shuffles the deck by randomizing the order of the cards
     public void shuffle() {
         // For i = last index of the deck down to 0
         for (int i = cards.size() - 1; i>0; i--){
@@ -73,12 +65,5 @@ public class Deck {
             cards.set(i, cards.get(random));
             cards.set(random, temp);
         }
-    }
-    public void draw(Graphics g){
-        // draw the deck which is faced down
-//        g.drawImage(backImage[0], 150, 400, 100, 150, a);
-//        g.drawImage(backImage[0], 500, 400, 100, 150, a);
-//
-
     }
 }

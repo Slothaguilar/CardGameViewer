@@ -1,3 +1,5 @@
+// Sofia Aguilar 2/18/24
+// this program creates a front end or window to my game and draws out the cards, players name, intro, and who wins
 import java.awt.*;
 
 public class Card {
@@ -8,19 +10,14 @@ public class Card {
     private String suit;
     private CardGameViewer window;
     private Image cardImage;
-    private Image[] backImage;
 
-    // A constructor that takes in these 3 parameters (rank, suit, and point)
     public Card(String rank, String suit, int point, CardGameViewer card,Image cardImage){
+        // Inzalizing the instance varables of the contructor
         this.rank = rank;
         this.suit = suit;
         this.point = point;
-
         this.window = card;
         this.cardImage = cardImage;
-        backImage = new Image[1];
-
-        backImage[0] = card.getCardImage()[52];
 
     }
     // Getter and Setter methods for each instance variable
@@ -52,9 +49,8 @@ public class Card {
 
         return rank + " of " + suit;
     }
-
+    // card draw itself with given x and y cooridinate of specific player
     public void draw(Graphics g,int x, int y){
-        // card draw itself
         g.drawImage(cardImage, x, y, 100, 150, window);
 
     }
